@@ -1,11 +1,323 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>忆兰lty 的个人站</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========================================================
+           1. 基础布局与大厂规范
+           ======================================================== */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%; 
+            font-family: "Segoe UI", SegoeUI, "Microsoft YaHei", Arial, sans-serif;
+            background-color: #fbfeed; /* 轻微偏象牙白/暖色，符合个人站温馨大气的氛围 */
+            color: #262626;
+            scroll-behavior: smooth; /* ✨ 核心：让点击顶栏按钮时的滚动变成平滑滚动 */
+        }
+
+        body {
+            padding-top: 48px; /* 为顶部的固定导航栏预留空间 */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-wrapper {
+            flex: 1 0 auto; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-wrapper {
+            flex-shrink: 0; 
+        }
+
+        /* 公共区域块样式 */
+        .section {
+            width: 100%;
+            max-width: 1200px; /* 限制最大宽度，大屏下居中显示 */
+            padding: 80px 24px; /* 留出充足的上下间距，尽显大气 */
+            box-sizing: border-box;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* ========================================================
+           2. 简述区域 (About) - 大头像与欢迎语
+           ======================================================== */
+        #about {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background-color: #ffffff; /* 错落排版：白色与浅色交替 */
+            max-width: 100%;
+        }
+
+        .profile-container {
+            margin-bottom: 24px;
+        }
+
+        .profile-avatar {
+            width: 150px;       /* 大号头像尺寸 */
+            height: 150px;
+            object-fit: cover;
+            border-radius: 24px; /* ✨ 圆角效果，而非纯圆 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* 微微的现代高级阴影 */
+            transition: transform 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05); /* 鼠标悬停微放大动画 */
+        }
+
+        .profile-name {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-bio {
+            font-size: 16px;
+            color: #616161;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        /* ========================================================
+           3. 作品区域 (Works) - 卡片式响应式布局
+           ======================================================== */
+        .works-grid {
+            display: grid;
+            /* 自动适应屏幕宽度排列卡片：最小280px，最大撑满 */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 24px;
+            width: 100%;
+        }
+
+        /* 作品卡片样式：易于直接复制添加 */
+        .work-card {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 鼠标悬停卡片浮起与微光阴影 */
+        .work-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+            border-color: #d2d2d2;
+        }
+
+        .work-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #f3f3f3;
+        }
+
+        .work-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .work-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+        }
+
+        .work-desc {
+            font-size: 14px;
+            color: #616161;
+            line-height: 1.5;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        /* ========================================================
+           4. 社交媒体区域 (Social)
+           ======================================================== */
+        #social {
+            background-color: #ffffff;
+            max-width: 100%;
+        }
+        
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        /* 社交媒体方块按钮 */
+        .social-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 90px;
+            border-radius: 16px; /* ✨ 圆角图标容器 */
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 28px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .social-btn span {
+            font-size: 12px;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* 各大社交平台专属VI颜色 */
+        .btn-bilibili { background-color: #00aeec; }
+        .btn-qq { background-color: #12b7f5; }
+        .btn-github { background-color: #24292e; }
+        .btn-x { background-color: #000000; }
+
+    </style>
 </head>
+
 <body>
-    <h1>Hello World</h1>
+    <div id="header-placeholder"></div>
+
+    <div class="main-wrapper">
+        
+        <section id="about" class="section">
+            <div class="profile-container">
+                <img src="/yllty.webp" alt="忆兰lty" class="profile-avatar">
+            </div>
+            <h2 class="profile-name">忆兰lty</h2>
+            <p class="profile-bio">
+                欢迎来到我的个人空间。一个成分复杂的“图灵派”计算机爱好者。
+            </p>
+        </section>
+
+        <section id="works" class="section">
+            <h3 class="section-title">我的作品</h3>
+            
+            <div class="works-grid">
+                
+                <a href="https://hiddenbrowser.yllty.de/" class="work-card">
+                    <img src="/res/hb.webp" alt="作品封面" class="work-img">
+                    <div class="work-info">
+                        <h4 class="work-title">Hidden Browser</h4>
+                        <p class="work-desc">一款高便携浏览器，在老师 / 老板的监视下隐形。</p>
+                    </div>
+                </a>
+
+                <a href="https://pan.quark.cn/s/fc72f1df830a" class="work-card">
+                    <img src="/res/hiddenmc.webp" alt="作品封面" class="work-img">
+                    <div class="work-info">
+                        <h4 class="work-title">HiddenMC</h4>
+                        <p class="work-desc">使 MC 窗口在屏幕捕获中隐藏，安全实现在希沃上玩 MC！</p>
+                    </div>
+                </a>
+
+                <a href="https://github.com/ylLty/SelectUnknown" class="work-card">
+                    <img src="/res/su.webp" alt="作品封面" class="work-img">
+                    <div class="work-info">
+                        <h4 class="work-title">Select Unknown</h4>
+                        <p class="work-desc">一个集成了视觉搜索、划词搜索、文字识别、翻译、扫码、截图、取色的 Windows 版 “圈定即搜”</p>
+                    </div>
+                </a>
+
+                <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3542577337" class="work-card">
+                    <img src="/res/dglabtmod.webp" alt="作品封面" class="work-img">
+                    <div class="work-info">
+                        <h4 class="work-title">DG-LAB X tMod</h4>
+                        <p class="work-desc">将泰拉瑞亚与DG-LAB连接起来。当游戏人物受伤害时，现实中的你也会被电！</p>
+                    </div>
+                </a>
+
+                <a href="https://www.nexusmods.com/stardewvalley/mods/38092" class="work-card">
+                    <img src="/res/Stardew-Valley-X-DG-LAB.webp" alt="作品封面" class="work-img">
+                    <div class="work-info">
+                        <h4 class="work-title">Stardew Valley X DG-LAB</h4>
+                        <p class="work-desc">将Stardew Valley与DG-LAB连接,赚不够钱就挨电！</p>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <section id="social" class="section" style="border-bottom: none;">
+            <h3 class="section-title">社交媒体</h3>
+            
+            <div class="social-container">
+                <a href="https://space.bilibili.com/474686923" target="_blank" class="social-btn btn-bilibili">
+                    <i class="fa-brands fa-bilibili"></i>
+                    <span>哔哩哔哩</span>
+                </a>
+                <a href="mqqapi://card/show_pslcard?src_type=internal&version=1&uin=1394117353&card_type=person&source=qrcode" target="_blank" class="social-btn btn-qq">
+                    <i class="fa-brands fa-qq"></i>
+                    <span>QQ 联系</span>
+                </a>
+                <a href="https://github.com/ylLty" target="_blank" class="social-btn btn-github">
+                    <i class="fa-brands fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://x.com/lty_yl98238" target="_blank" class="social-btn btn-x">
+                    <i class="fa-brands fa-x-twitter"></i>
+                    <span>X (Twitter)</span>
+                </a>
+            </div>
+        </section>
+
+    </div>
+
+    <div id="footer-placeholder" class="footer-wrapper"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            function loadComponent(elementId, fileUrl) {
+                fetch(fileUrl)
+                    .then(response => response.text())
+                    .then(data => {
+                        const element = document.getElementById(elementId);
+                        if (element) {
+                            element.innerHTML = data;
+                        } else {
+                            console.error(`未找到 ID 为 ${elementId} 的占位标签`);
+                        }
+                    })
+                    .catch(error => console.error('加载组件失败:', error));
+            }
+
+            loadComponent('header-placeholder', 'header.txt');
+            loadComponent('footer-placeholder', 'footer.txt');
+        });
+    </script>
 </body>
+
 </html>

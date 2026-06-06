@@ -1,0 +1,40 @@
+<style>
+    .ms-footer {
+        background-color: #1b1b1b; /* 高级深炭黑背景 */
+        color: #aeaeae;            /* 柔和的浅灰色文字，不刺眼 */
+        font-family: "Segoe UI", SegoeUI, "Microsoft YaHei", Arial, sans-serif;
+        font-size: 13px;           /* 精致小字号 */
+        text-align: center;        /* 全局文字居中 */
+        padding: 30px 20px ;        /* 上下留白，显得大气 */
+        border-top: 1px solid #2d2d2d; /* 顶部一条若隐若现的深灰色分割线 */
+        line-height: 1.8;          /* 调整行高，让两行字之间有呼吸感 */
+        margin: 0 !important;
+    }
+
+    /* 链接样式 */
+    .ms-footer a {
+        color: #0078d4;            /* 微软经典蓝色链接（或者可以用 #58a6ff GitHub蓝） */
+        text-decoration: none;
+        transition: color 0.2s ease, text-decoration 0.2s ease;
+    }
+
+    /* 鼠标悬停在链接上的效果 */
+    .ms-footer a:hover {
+        color: #2b98f0;
+        text-decoration: underline; /* 悬停时出现下划线，符合大厂无障碍设计规范 */
+    }
+
+    /* 第二行小字减弱视觉权重 */
+    .ms-footer .hosting-info {
+        font-size: 12px;
+        color: #7c7c7c;
+        margin-top: 6px;
+    }
+</style>
+
+<footer class="ms-footer">
+    <div>Copyright &copy; 2026 yl_lty. All rights reserved.</div>
+    <div class="hosting-info">
+        Hosted on <a href="https://github.com/ylLty/me.yllty.de/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>
+    </div>
+</footer>

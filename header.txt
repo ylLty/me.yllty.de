@@ -1,0 +1,106 @@
+<style>
+    :root {
+        --segoe-font: "Segoe UI", SegoeUI, "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    /* 页头容器 */
+    .ms-header {
+    font-family: var(--segoe-font);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid #e5e5e5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+
+    /* ✨ 核心修改：让导航栏固定在屏幕顶部 */
+    position: fixed;    /* 开启固定定位 */
+    top: 0;             /* 紧贴浏览器顶部 */
+    left: 0;            /* 紧贴浏览器左侧 */
+    width: 100%;        /* 宽度撑满整个屏幕 */
+    box-sizing: border-box; /* 防止 padding 撑破宽度 */
+    z-index: 9999;      /* 确保页头永远在最上层，不会被网页的其他内容遮挡 */
+}
+
+    /* 左侧 Logo 和品牌区域 */
+    .ms-header-brand {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #262626;
+        gap: 12px;
+        transition: opacity 0.2s ease;
+    }
+    
+    .ms-header-brand:hover {
+        opacity: 0.8;
+    }
+
+    .ms-header-logo {
+        width: 24px;         /* 图标宽度 */
+        height: 24px;        /* 图标高度（确保宽高1:1相等，否则变圆形会变成椭圆） */
+        object-fit: cover;   /* ✨ 确保图片在裁剪时不会拉伸变形 */
+    
+        /* ✨ 核心代码：将图片四个角切成 50% 的圆弧，直接变成正圆形 */
+        border-radius: 50%;
+    }
+
+    .ms-header-title {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        color: #262626;
+    }
+
+    /* 右侧导航菜单 */
+    .ms-header-nav {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        gap: 8px; /* 紧凑但精致的间距 */
+    }
+
+    .ms-nav-item {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        padding: 0 16px;
+        font-size: 13px; /* 微软偏爱精致的小字号 */
+        color: #262626;
+        text-decoration: none;
+        position: relative;
+        transition: background-color 0.1s ease;
+    }
+
+    /* 微软经典的底部虚线或实线悬停反馈（这里采用极简微光灰背景） */
+    .ms-nav-item:hover {
+        background-color: #f2f2f2;
+    }
+
+    /* 也可以激活一个底边框效果 */
+    .ms-nav-item:hover::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 16px;
+        right: 16px;
+        height: 2px;
+        background-color: #262626;
+    }
+</style>
+
+<header class="ms-header">
+    <a href="/index.html" class="ms-header-brand" title="点击跳转主站">
+        <img src="/favicon.ico" alt="Logo" class="ms-header-logo">
+        <span class="ms-header-title">忆兰lty</span>
+    </a>
+
+    <nav class="ms-header-nav">
+        <a href="#works" class="ms-nav-item">作品</a>
+        <a href="#about" class="ms-nav-item">简述</a>
+        <a href="#social" class="ms-nav-item">社交媒体</a>
+    </nav>
+</header>
