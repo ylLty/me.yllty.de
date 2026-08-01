@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>全国机构分布热力图</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background-color: #f4f6f9;
@@ -17,21 +23,39 @@
             overflow: hidden;
             position: relative;
         }
-        
+
         /* 顶部控制栏 */
         header {
             background: #ffffff;
             padding: 10px 14px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 10;
             flex-shrink: 0;
         }
-        h1 { font-size: 15px; font-weight: 600; color: #1f2937; }
-        .controls { display: flex; align-items: center; gap: 8px; }
-        label { font-size: 12px; color: #6b7280; display: inline-flex; align-items: center; gap: 3px; }
+
+        h1 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 12px;
+            color: #6b7280;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
         select {
             padding: 4px 6px;
             border: 1px solid #d1d5db;
@@ -53,6 +77,7 @@
             z-index: 9;
             flex-shrink: 0;
         }
+
         .group-notice-bar a {
             color: #096dd9;
             font-weight: bold;
@@ -88,7 +113,10 @@
             padding: 4px;
             opacity: 0.6;
         }
-        .close-btn:hover { opacity: 1; }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
 
         /* 地图主容器 */
         #map-container {
@@ -102,7 +130,10 @@
         /* 加载中与错误提示遮罩 */
         #loading-mask {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(255, 255, 255, 0.95);
             display: flex;
             flex-direction: column;
@@ -114,6 +145,7 @@
             font-size: 14px;
             color: #4b5563;
         }
+
         .spinner {
             width: 32px;
             height: 32px;
@@ -123,8 +155,13 @@
             animation: spin 0.8s linear infinite;
             margin-bottom: 12px;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         .error-box {
             background: #fef2f2;
             border: 1px solid #fecaca;
@@ -150,7 +187,7 @@
             max-height: 100vh;
             background: #ffffff;
             border-radius: 16px 16px 0 0;
-            box-shadow: 0 -4px 16px rgba(0,0,0,0.12);
+            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
             z-index: 15;
             display: flex;
             flex-direction: column;
@@ -189,6 +226,7 @@
             gap: 16px;
             border-bottom: 1px solid #f1f5f9;
         }
+
         .tab-btn {
             padding: 8px 0;
             font-size: 13px;
@@ -199,9 +237,11 @@
             cursor: pointer;
             position: relative;
         }
+
         .tab-btn.active {
             color: #3b82f6;
         }
+
         .tab-btn.active::after {
             content: '';
             position: absolute;
@@ -243,19 +283,25 @@
             font-size: 12px;
             gap: 10px;
         }
+
         .rank-num {
             width: 20px;
             font-weight: bold;
             color: #9ca3af;
             text-align: right;
         }
-        .rank-num.top3 { color: #ef4444; }
+
+        .rank-num.top3 {
+            color: #ef4444;
+        }
+
         .rank-name {
             width: 48px;
             font-weight: 500;
             color: #1f2937;
             white-space: nowrap;
         }
+
         .rank-bar-wrapper {
             flex: 1;
             background: #f3f4f6;
@@ -264,12 +310,14 @@
             overflow: hidden;
             position: relative;
         }
+
         .rank-bar-inner {
             height: 100%;
             background: #3b82f6;
             border-radius: 7px;
             transition: width 0.4s ease, background-color 0.3s ease;
         }
+
         .rank-value {
             width: 85px;
             text-align: right;
@@ -286,6 +334,7 @@
             display: flex;
             gap: 8px;
         }
+
         .search-input {
             flex: 1;
             padding: 6px 10px;
@@ -295,6 +344,7 @@
             outline: none;
             background: #f9fafb;
         }
+
         .search-input:focus {
             border-color: #3b82f6;
             background: #fff;
@@ -312,23 +362,26 @@
             transition: border-color 0.2s, box-shadow 0.2s;
             cursor: pointer;
         }
+
         .org-card:hover {
             border-color: #93c5fd;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
+
         .org-card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 8px;
         }
+
         .org-title {
             font-size: 13px;
             font-weight: 600;
             color: #111827;
             line-height: 1.4;
         }
-        
+
         /* 状态标签配色 */
         .org-status-tag {
             font-size: 11px;
@@ -337,15 +390,35 @@
             white-space: nowrap;
             font-weight: 500;
         }
+
         /* 存续：绿色 */
-        .status-active { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+        .status-active {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
         /* 注销：红色 */
-        .status-cancelled { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+        .status-cancelled {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
         /* 关闭：黄色 */
-        .status-closed { background: #fffbe6; color: #d48806; border: 1px solid #ffe58f; }
+        .status-closed {
+            background: #fffbe6;
+            color: #d48806;
+            border: 1px solid #ffe58f;
+        }
+
         /* 吊销：深红色 */
-        .status-revoked { background: #fef2f2; color: #7f1d1d; border: 1px solid #fca5a5; }
-        
+        .status-revoked {
+            background: #fef2f2;
+            color: #7f1d1d;
+            border: 1px solid #fca5a5;
+        }
+
         .org-info-row {
             display: flex;
             justify-content: space-between;
@@ -353,11 +426,13 @@
             font-size: 11px;
             color: #6b7280;
         }
+
         .org-actions {
             display: flex;
             gap: 8px;
             margin-top: 2px;
         }
+
         .btn-copy {
             padding: 3px 8px;
             font-size: 11px;
@@ -368,13 +443,19 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-        .btn-copy:hover { background: #e5e7eb; }
+
+        .btn-copy:hover {
+            background: #e5e7eb;
+        }
 
         /* 详情模态弹窗 */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
             z-index: 30;
             display: flex;
             justify-content: center;
@@ -384,25 +465,41 @@
             pointer-events: none;
             transition: opacity 0.25s ease;
         }
+
         .modal-overlay.active {
             opacity: 1;
             pointer-events: auto;
         }
+
         .modal-card {
             background: #ffffff;
             width: 100%;
             max-width: 440px;
             border-radius: 12px;
             padding: 18px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             display: flex;
             flex-direction: column;
             gap: 12px;
             position: relative;
         }
-        .modal-title { font-size: 15px; font-weight: 600; color: #111827; padding-right: 24px; }
-        .modal-item { font-size: 12px; color: #4b5563; line-height: 1.6; }
-        .modal-item strong { color: #111827; }
+
+        .modal-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #111827;
+            padding-right: 24px;
+        }
+
+        .modal-item {
+            font-size: 12px;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .modal-item strong {
+            color: #111827;
+        }
 
         /* Toast 轻提示 */
         #toast {
@@ -410,7 +507,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.75);
+            background: rgba(0, 0, 0, 0.75);
             color: #ffffff;
             padding: 8px 16px;
             border-radius: 20px;
@@ -420,7 +517,10 @@
             pointer-events: none;
             transition: opacity 0.2s;
         }
-        #toast.show { opacity: 1; }
+
+        #toast.show {
+            opacity: 1;
+        }
 
         /* 底部版权 */
         footer {
@@ -433,6 +533,7 @@
             user-select: none;
             width: 100%;
         }
+
         .search-box-wrapper {
             padding: 8px 14px;
             background: #ffffff;
@@ -457,7 +558,7 @@
 
             border: none;
             background: transparent;
-        
+
             font-size: 18px;
             color: #9ca3af;
 
@@ -476,6 +577,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -585,7 +687,8 @@
             <div class="modal-title" id="mName">-</div>
             <div class="modal-item"><strong>状态：</strong><span id="mStatus">-</span></div>
             <div class="modal-item"><strong>法定代表人/负责人：</strong><span id="mLegal">-</span></div>
-            <div class="modal-item"><strong>数据来源说明：</strong>公开资料整理与数据可视化汇总。本站不对机构性质、运营方式及相关争议作出认定。若有侵权，请联系 yl_lty@outlook.com；有误请在 https://v.wjx.cn/vm/h4LBImu.aspx# 上报。</div>
+            <div class="modal-item"><strong>数据来源说明：</strong>公开资料整理与数据可视化汇总。本站不对机构性质、运营方式及相关争议作出认定。若有侵权，请联系
+                yl_lty@outlook.com；有误请在 https://v.wjx.cn/vm/h4LBImu.aspx# 上报。</div>
         </div>
     </div>
 
@@ -625,34 +728,34 @@
         // 地图 GeoJSON 名称适配：名单使用简称，china.json 使用全称
         function provinceToMapName(name) {
             const map = {
-                "北京":"北京市", "天津":"天津市", "上海":"上海市", "重庆":"重庆市",
-                "河北":"河北省", "山西":"山西省", "辽宁":"辽宁省", "吉林":"吉林省",
-                "黑龙江":"黑龙江省", "江苏":"江苏省", "浙江":"浙江省", "安徽":"安徽省",
-                "福建":"福建省", "江西":"江西省", "山东":"山东省", "河南":"河南省",
-                "湖北":"湖北省", "湖南":"湖南省", "广东":"广东省", "海南":"海南省",
-                "四川":"四川省", "贵州":"贵州省", "云南":"云南省", "陕西":"陕西省",
-                "甘肃":"甘肃省", "青海":"青海省", "台湾":"台湾省",
-                "内蒙古":"内蒙古自治区", "广西":"广西壮族自治区",
-                "西藏":"西藏自治区", "宁夏":"宁夏回族自治区",
-                "新疆":"新疆维吾尔自治区", "香港":"香港特别行政区",
-                "澳门":"澳门特别行政区"
+                "北京": "北京市", "天津": "天津市", "上海": "上海市", "重庆": "重庆市",
+                "河北": "河北省", "山西": "山西省", "辽宁": "辽宁省", "吉林": "吉林省",
+                "黑龙江": "黑龙江省", "江苏": "江苏省", "浙江": "浙江省", "安徽": "安徽省",
+                "福建": "福建省", "江西": "江西省", "山东": "山东省", "河南": "河南省",
+                "湖北": "湖北省", "湖南": "湖南省", "广东": "广东省", "海南": "海南省",
+                "四川": "四川省", "贵州": "贵州省", "云南": "云南省", "陕西": "陕西省",
+                "甘肃": "甘肃省", "青海": "青海省", "台湾": "台湾省",
+                "内蒙古": "内蒙古自治区", "广西": "广西壮族自治区",
+                "西藏": "西藏自治区", "宁夏": "宁夏回族自治区",
+                "新疆": "新疆维吾尔自治区", "香港": "香港特别行政区",
+                "澳门": "澳门特别行政区"
             };
             return map[name] || name;
         }
 
         function mapNameToProvince(name) {
             const map = {
-                "北京市":"北京", "天津市":"天津", "上海市":"上海", "重庆市":"重庆",
-                "河北省":"河北", "山西省":"山西", "辽宁省":"辽宁", "吉林省":"吉林",
-                "黑龙江省":"黑龙江", "江苏省":"江苏", "浙江省":"浙江", "安徽省":"安徽",
-                "福建省":"福建", "江西省":"江西", "山东省":"山东", "河南省":"河南",
-                "湖北省":"湖北", "湖南省":"湖南", "广东省":"广东", "海南省":"海南",
-                "四川省":"四川", "贵州省":"贵州", "云南省":"云南", "陕西省":"陕西",
-                "甘肃省":"甘肃", "青海省":"青海", "台湾省":"台湾",
-                "内蒙古自治区":"内蒙古", "广西壮族自治区":"广西",
-                "西藏自治区":"西藏", "宁夏回族自治区":"宁夏",
-                "新疆维吾尔自治区":"新疆", "香港特别行政区":"香港",
-                "澳门特别行政区":"澳门"
+                "北京市": "北京", "天津市": "天津", "上海市": "上海", "重庆市": "重庆",
+                "河北省": "河北", "山西省": "山西", "辽宁省": "辽宁", "吉林省": "吉林",
+                "黑龙江省": "黑龙江", "江苏省": "江苏", "浙江省": "浙江", "安徽省": "安徽",
+                "福建省": "福建", "江西省": "江西", "山东省": "山东", "河南省": "河南",
+                "湖北省": "湖北", "湖南省": "湖南", "广东省": "广东", "海南省": "海南",
+                "四川省": "四川", "贵州省": "贵州", "云南省": "云南", "陕西省": "陕西",
+                "甘肃省": "甘肃", "青海省": "青海", "台湾省": "台湾",
+                "内蒙古自治区": "内蒙古", "广西壮族自治区": "广西",
+                "西藏自治区": "西藏", "宁夏回族自治区": "宁夏",
+                "新疆维吾尔自治区": "新疆", "香港特别行政区": "香港",
+                "澳门特别行政区": "澳门"
             };
             return map[name] || name;
         }
@@ -692,7 +795,7 @@
                 textarea.style.opacity = '0';
                 document.body.appendChild(textarea);
                 textarea.select();
-                try { document.execCommand('copy'); } catch (err) {}
+                try { document.execCommand('copy'); } catch (err) { }
                 document.body.removeChild(textarea);
             }
             showToast("已复制");
@@ -734,7 +837,7 @@
                 ]);
 
                 echarts.registerMap('_china', geoJson);
-                
+
                 const parsed = parseTextData(textData);
                 cachedParsedData = parsed.counts;
                 rawOrgList = parsed.orgs;
@@ -743,7 +846,7 @@
                 renderMap(cachedParsedData);
                 renderRankList(cachedParsedData);
                 setupMapClick();
-                
+
                 loadingMask.style.display = 'none';
                 // 确保默认初始化时处于“半展开”状态
                 setPanelState('half', false);
@@ -768,7 +871,7 @@
                 try {
                     const res = await fetchWithTimeout(url, {}, 8000);
                     if (res.ok) return await res.json();
-                } catch (e) {}
+                } catch (e) { }
             }
             throw new Error('地图底图（GeoJSON）节点连接失败');
         }
@@ -795,7 +898,8 @@
             const lines = text.split(/\r?\n/);
             lines.forEach((line, index) => {
                 let trimmed = line.trim();
-                if (!trimmed) return;
+                // 过滤空行与以 # 开头的注释行
+                if (!trimmed || trimmed.startsWith('#')) return;
 
                 // 清理开头的符号，如 【 [ 以及末尾符号
                 trimmed = trimmed.replace(/^[【\[\s]+/, '').replace(/[】\]]+$/, '').trim();
@@ -869,7 +973,7 @@
             const seriesData = Object.keys(countsData).map(provName => {
                 const item = countsData[provName];
                 const cancelRateNum = item.total > 0 ? (item.cancelled / item.total) * 100 : 0;
-                
+
                 let val = item.total;
                 if (selectedMetric === 'active') val = item.active;
                 else if (selectedMetric === 'cancelled') val = item.cancelled;
@@ -890,7 +994,7 @@
             const option = {
                 tooltip: {
                     trigger: 'item',
-                    formatter: function(params) {
+                    formatter: function (params) {
                         if (!params.data) return `<strong>${params.name}</strong><br/>暂无统计数据`;
                         const { total = 0, cancelled = 0, active = 0, cancelRate = '0.0' } = params.data;
                         return `
@@ -935,7 +1039,7 @@
         }
 
         function setupMapClick() {
-            myChart.on('click', function(params) {
+            myChart.on('click', function (params) {
                 if (params.name) {
                     document.getElementById('provinceFilter').value = mapNameToProvince(params.name);
                     //switchTab('org');
@@ -1026,15 +1130,15 @@
             }
         }
 
-                function filterAndRenderOrgs() {
+        function filterAndRenderOrgs() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
             const provFilter = document.getElementById('provinceFilter').value;
 
             filteredOrgList = rawOrgList.filter(item => {
                 const matchProv = !provFilter || item.province === provFilter;
-                const matchQuery = !query || 
+                const matchQuery = !query ||
                     item.rawLine.toLowerCase().includes(query) ||
-                    item.name.toLowerCase().includes(query) || 
+                    item.name.toLowerCase().includes(query) ||
                     item.legalPerson.toLowerCase().includes(query);
                 return matchProv && matchQuery;
             });
@@ -1061,7 +1165,7 @@
             }
 
             const pageData = filteredOrgList.slice((pageIndex - 1) * PAGE_SIZE, pageIndex * PAGE_SIZE);
-            
+
             const htmlArr = pageData.map(item => {
                 // 状态颜色划分：存续(绿)、注销(红)、关闭(黄)、吊销(深红)
                 let tagClass = 'status-active';
@@ -1094,7 +1198,7 @@
             }
         }
 
-        document.getElementById('orgListContainer').addEventListener('scroll', function() {
+        document.getElementById('orgListContainer').addEventListener('scroll', function () {
             if (this.scrollTop + this.clientHeight >= this.scrollHeight - 50) {
                 if (pageIndex * PAGE_SIZE < filteredOrgList.length) {
                     pageIndex++;
@@ -1127,29 +1231,31 @@
         }
 
         /* -------------------------------------------------------------
-         * 核心关键修复：抽屉三挡平滑折叠与吸附逻辑
-         * ------------------------------------------------------------- */
+ * 核心修复：完美跟手、解决触底瞬间跳变的无缝手势衔接
+ * ------------------------------------------------------------- */
         const rankPanel = document.getElementById('rankPanel');
         const dragArea = document.getElementById('dragArea');
 
-        let currentState = 'half'; // 可选值：'full', 'half', 'collapsed'
+        let currentState = 'half'; // 'full', 'half', 'collapsed'
         let startY = 0;
         let startTransformY = 0;
         let isDragging = false;
+        let touchScrollTarget = null;
+        let isBoundaryReached = false; // 标记是否触发了边界衔接
 
         // 计算不同状态下 TransformY 偏移像素量
         function getTranslateForState(state) {
             const panelHeight = rankPanel.offsetHeight;
             if (state === 'full') return 0; // 全屏
             if (state === 'half') return panelHeight * 0.45; // 中间半展开
-            return panelHeight - 54; // 底部折叠收起（保留拖拽手柄及选项卡标题）
+            return panelHeight - 54; // 底部折叠收起
         }
 
-        // 精确获取当前组件在 Y 轴方向上的平移像素（必须读取 m42 即 Y 轴）
+        // 获取当前 TransformY 偏移行
         function getCurrentTransformY() {
             const style = window.getComputedStyle(rankPanel);
             const matrix = new DOMMatrix(style.transform);
-            return matrix.m42; // 注意：m41 是 X 轴，m42 才是 Y 轴！
+            return matrix.m42;
         }
 
         function setPanelState(state, animate = true) {
@@ -1164,7 +1270,6 @@
             const currentY = getCurrentTransformY();
             const panelHeight = rankPanel.offsetHeight;
 
-            // 根据当前滑动停止的位置，吸附到最近的一档
             if (currentY < panelHeight * 0.22) {
                 setPanelState('full');
             } else if (currentY < panelHeight * 0.70) {
@@ -1174,49 +1279,99 @@
             }
         }
 
-        // 单击拖拽区域循环切换状态
-        dragArea.addEventListener('click', (e) => {
-            if (['SELECT', 'OPTION', 'LABEL', 'INPUT', 'BUTTON'].includes(e.target.tagName)) return;
-            if (!isDragging) {
-                if (currentState === 'collapsed') setPanelState('half');
-                else if (currentState === 'half') setPanelState('full');
-                else setPanelState('half');
+        // 辅助检测：获取可滚动的父容器
+        function findScrollableParent(el) {
+            let curr = el;
+            while (curr && curr !== rankPanel) {
+                if (curr.classList && curr.classList.contains('rank-body')) {
+                    return curr;
+                }
+                curr = curr.parentElement;
             }
-        });
+            return null;
+        }
 
-        // 触摸屏事件监听
-        dragArea.addEventListener('touchstart', (e) => {
-            if (['SELECT', 'INPUT'].includes(e.target.tagName)) return;
+        // ---------------- 移动端 Touch 事件（解决触底跳变的重置机制） ----------------
+        rankPanel.addEventListener('touchstart', (e) => {
+            if (['SELECT', 'INPUT', 'BUTTON', 'A'].includes(e.target.tagName)) return;
+
             startY = e.touches[0].clientY;
             startTransformY = getCurrentTransformY();
             isDragging = false;
+            isBoundaryReached = false;
+            touchScrollTarget = findScrollableParent(e.target);
         }, { passive: true });
 
-        dragArea.addEventListener('touchmove', (e) => {
+        rankPanel.addEventListener('touchmove', (e) => {
             if (['SELECT', 'INPUT'].includes(e.target.tagName)) return;
+
             const currentY = e.touches[0].clientY;
-            const diffY = currentY - startY;
-            if (Math.abs(diffY) > 5) isDragging = true;
+            let diffY = currentY - startY;
 
-            let targetY = startTransformY + diffY;
-            if (targetY < 0) targetY = 0;
-            const maxY = getTranslateForState('collapsed');
-            if (targetY > maxY) targetY = maxY;
+            // 如果处于内部列表区域，判断滚动边界
+            if (touchScrollTarget) {
+                const scrollTop = touchScrollTarget.scrollTop;
+                const scrollHeight = touchScrollTarget.scrollHeight;
+                const clientHeight = touchScrollTarget.clientHeight;
 
-            rankPanel.style.transition = 'none';
-            rankPanel.style.transform = `translateY(${targetY}px)`;
+                const isAtTop = scrollTop <= 0;
+                // 使用 1px 容错判断是否触底
+                const isAtBottom = Math.abs((scrollTop + clientHeight) - scrollHeight) <= 1;
+
+                // 如果在列表中间（非触顶向上拉，非触底向下拉），让原生滚动接管
+                if ((diffY > 0 && !isAtTop) || (diffY < 0 && !isAtBottom)) {
+                    // 在列表中间滚动时，不断更新起点，防止到达边缘时计算出巨大的 diffY 导致瞬间跳变
+                    startY = currentY;
+                    startTransformY = getCurrentTransformY();
+                    return;
+                }
+
+                // 首次刚触发触顶/触底边缘衔接时，重置起始位置，实现无缝跟手
+                if (!isBoundaryReached) {
+                    isBoundaryReached = true;
+                    startY = currentY;
+                    startTransformY = getCurrentTransformY();
+                    diffY = 0; // 重置本次 diffY
+                }
+            }
+
+            // 触发抽屉拖拽跟手
+            if (Math.abs(diffY) > 2 || isDragging) {
+                isDragging = true;
+                let targetY = startTransformY + diffY;
+
+                // 边界限制
+                if (targetY < 0) targetY = 0;
+                const maxY = getTranslateForState('collapsed');
+                if (targetY > maxY) targetY = maxY;
+
+                // 实时跟手，关闭动画过渡
+                rankPanel.style.transition = 'none';
+                rankPanel.style.transform = `translateY(${targetY}px)`;
+            }
         }, { passive: true });
 
-        dragArea.addEventListener('touchend', (e) => {
-            if (['SELECT', 'INPUT'].includes(e.target.tagName)) return;
-            if (!isDragging) return;
-            snapToClosestState();
+        rankPanel.addEventListener('touchend', (e) => {
+            if (isDragging) {
+                snapToClosestState();
+                isDragging = false;
+            }
+            isBoundaryReached = false;
         });
 
-        // 鼠标拖拽事件监听（兼容 PC 端）
+        // ---------------- PC 端 Mouse 鼠标拖拽 ----------------
         let isMouseDown = false;
-        dragArea.addEventListener('mousedown', (e) => {
-            if (['SELECT', 'INPUT', 'BUTTON'].includes(e.target.tagName)) return;
+
+        rankPanel.addEventListener('mousedown', (e) => {
+            if (['SELECT', 'INPUT', 'BUTTON', 'A'].includes(e.target.tagName)) return;
+
+            const scrollable = findScrollableParent(e.target);
+            if (scrollable) {
+                const isAtTop = scrollable.scrollTop <= 0;
+                const isAtBottom = Math.abs((scrollable.scrollTop + scrollable.clientHeight) - scrollable.scrollHeight) <= 1;
+                if (!isAtTop && !isAtBottom) return;
+            }
+
             isMouseDown = true;
             startY = e.clientY;
             startTransformY = getCurrentTransformY();
@@ -1226,23 +1381,40 @@
         window.addEventListener('mousemove', (e) => {
             if (!isMouseDown) return;
             const diffY = e.clientY - startY;
-            if (Math.abs(diffY) > 5) isDragging = true;
 
-            let targetY = startTransformY + diffY;
-            if (targetY < 0) targetY = 0;
-            const maxY = getTranslateForState('collapsed');
-            if (targetY > maxY) targetY = maxY;
+            if (Math.abs(diffY) > 2) isDragging = true;
 
-            rankPanel.style.transition = 'none';
-            rankPanel.style.transform = `translateY(${targetY}px)`;
+            if (isDragging) {
+                let targetY = startTransformY + diffY;
+                if (targetY < 0) targetY = 0;
+                const maxY = getTranslateForState('collapsed');
+                if (targetY > maxY) targetY = maxY;
+
+                rankPanel.style.transition = 'none';
+                rankPanel.style.transform = `translateY(${targetY}px)`;
+            }
         });
 
         window.addEventListener('mouseup', () => {
             if (!isMouseDown) return;
             isMouseDown = false;
-            if (!isDragging) return;
-            snapToClosestState();
+            if (isDragging) {
+                snapToClosestState();
+                isDragging = false;
+            }
         });
+
+        // 单击顶部拖拽手柄切换状态
+        dragArea.addEventListener('click', (e) => {
+            if (['SELECT', 'OPTION', 'LABEL', 'INPUT', 'BUTTON'].includes(e.target.tagName)) return;
+            if (!isDragging) {
+                if (currentState === 'collapsed') setPanelState('half');
+                else if (currentState === 'half') setPanelState('full');
+                else setPanelState('half');
+            }
+        });
+
+        //==========拖拽部分结束
 
         // 绑定搜索与筛选控件事件
         let searchTimer = null;
@@ -1289,4 +1461,5 @@
         start();
     </script>
 </body>
+
 </html>
