@@ -391,6 +391,18 @@
             font-weight: 500;
         }
 
+        /* HOT 标签：橙色火焰 */
+        .org-hot-tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            font-weight: 600;
+            background: #fff7ed;
+            color: #ea580c;
+            border: 1px solid #fdba74;
+        }
+
         /* 存续：绿色 */
         .status-active {
             background: #f0fdf4;
@@ -689,6 +701,7 @@
         <div class="modal-card">
             <button class="close-btn" onclick="closeModal()">✕</button>
             <div class="modal-title" id="mName">-</div>
+            <div id="mHotTag"></div>
             <div class="modal-item"><strong>状态：</strong><span id="mStatus">-</span></div>
             <div class="modal-item"><strong>法定代表人/负责人：</strong><span id="mLegal">-</span></div>
             <div class="modal-item"><strong>数据来源说明：</strong>公开资料整理与数据可视化汇总。本站不对机构性质、运营方式及相关争议作出认定。若有侵权，请联系
@@ -919,6 +932,8 @@
                 }
 
                 // 判断状态：关闭、注销、吊销、存续
+                let isHot = /\bHOT\b/i.test(trimmed);
+
                 let status = "存续";
                 if (trimmed.includes('关闭') || trimmed.includes('已关闭')) {
                     status = "关闭";
@@ -961,6 +976,7 @@
                     fullName: rawNameToken,
                     province: matchedProv,
                     status: status,
+                    isHot: isHot,
                     legalPerson: legalPerson,
                     rawLine: trimmed
                 });
@@ -1180,9 +1196,12 @@
                 return `
                     <div class="org-card" onclick="openDetail(${item.id})">
                         <div class="org-card-header">
-                            <div class="org-title">${item.name}</div>
-                            <span class="org-status-tag ${tagClass}">${item.status}</span>
-                        </div>
+                             <div class="org-title">${item.name}</div>
+                             <div style="display:flex;gap:4px;align-items:center;">
+                                 ${item.isHot ? '<span class="org-hot-tag">🔥 HOT</span>' : ''}
+                                 <span class="org-status-tag ${tagClass}">${item.status}</span>
+                             </div>
+                         </div>
                         <div class="org-info-row">
                             <span>📍 ${item.province}</span>
                             <span>法人/代表：${item.legalPerson}</span>
@@ -1216,6 +1235,7 @@
             if (!org) return;
 
             document.getElementById('mName').innerText = org.fullName || org.name;
+            document.getElementById('mHotTag').innerHTML = org.isHot ? '<span class="org-hot-tag">🔥 HOT</span>' : '';
             document.getElementById('mStatus').innerText = org.status;
             document.getElementById('mLegal').innerText = org.legalPerson;
 
