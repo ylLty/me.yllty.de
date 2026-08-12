@@ -150,6 +150,12 @@
             z-index: 9;
             min-height 0;
             height: 42px;
+
+            /* 新增：设置 Flexbox 布局实现垂直居中 */
+            display: flex;
+            align-items: center;      /* 垂直居中 */
+            justify-content: center;   /* 水平居中 */
+            box-sizing: border-box;    /* 确保 padding 不会额外撑高容器 */
         }
 
         .group-notice-bar a {
