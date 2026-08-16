@@ -7,21 +7,21 @@
     <title>全国机构分布热力图</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <script>
-    //默认浏览器打开链接
-    function openInDefault(url) {
-        copyText(url)//先复制
-        const u = new URL(url);
+        //默认浏览器打开链接
+        function openInDefault(url) {
+            copyText(url)//先复制
+            const u = new URL(url);
 
-        const intentUrl =
-            "intent://" +
-            u.host + u.pathname + u.search + u.hash +
-            "#Intent;" +
-            "scheme=" + u.protocol.replace(":", "") + ";" +
-            "action=android.intent.action.VIEW;" +
-            "end";
-    
-        window.location.href = intentUrl;
-    }
+            const intentUrl =
+                "intent://" +
+                u.host + u.pathname + u.search + u.hash +
+                "#Intent;" +
+                "scheme=" + u.protocol.replace(":", "") + ";" +
+                "action=android.intent.action.VIEW;" +
+                "end";
+
+            window.location.href = intentUrl;
+        }
         /* 宣发通知列表 */
         const groupNotices = [
             `
@@ -74,10 +74,10 @@
             }, 5000);
         }
 
-    window.addEventListener("DOMContentLoaded", () => {
+        window.addEventListener("DOMContentLoaded", () => {
             startGroupNoticeLoop();
         });
-        
+
     </script>
     <style>
         * {
@@ -148,14 +148,16 @@
             text-align: center;
             position: relative;
             z-index: 9;
-            min-height 0;
             height: 42px;
 
             /* 新增：设置 Flexbox 布局实现垂直居中 */
             display: flex;
-            align-items: center;      /* 垂直居中 */
-            justify-content: center;   /* 水平居中 */
-            box-sizing: border-box;    /* 确保 padding 不会额外撑高容器 */
+            align-items: center;
+            /* 垂直居中 */
+            justify-content: center;
+            /* 水平居中 */
+            box-sizing: border-box;
+            /* 确保 padding 不会额外撑高容器 */
         }
 
         .group-notice-bar a {
@@ -164,7 +166,7 @@
             text-decoration: underline;
             cursor: pointer;
         }
-        
+
         /* 通知切换动画 */
         #groupNoticeContent {
             opacity: 1;
@@ -781,7 +783,8 @@
             <div id="mHotTag"></div>
             <div class="modal-item"><strong>状态：</strong><span id="mStatus">-</span></div>
             <div class="modal-item"><strong>法定代表人/负责人：</strong><span id="mLegal">-</span></div>
-            <div class="modal-item"><strong>数据来源说明：</strong>公开资料整理与数据可视化汇总；本站不对机构性质、运营方式及相关争议作出认定；如有 HOT 字样仅表示该机构近期在互联网上有较多相关讨论，无其他含义；若有侵权，请联系
+            <div class="modal-item"><strong>数据来源说明：</strong>公开资料整理与数据可视化汇总；本站不对机构性质、运营方式及相关争议作出认定；如有 HOT
+                字样仅表示该机构近期在互联网上有较多相关讨论，无其他含义；若有侵权，请联系
                 yl_lty@outlook.com。</div>
         </div>
     </div>
