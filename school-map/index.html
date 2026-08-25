@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>戒网查 3.0</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <script>
         //默认浏览器打开链接
@@ -103,22 +104,27 @@
             padding: 10px 14px;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
             display: flex;
-            justify-content: space-between;
             align-items: center;
             z-index: 10;
             flex-shrink: 0;
         }
 
+        header img {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
         h1 {
+            margin: 0;
             font-size: 15px;
             font-weight: 600;
             color: #1f2937;
         }
 
         .controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-left: auto;
         }
 
         label {
@@ -685,6 +691,7 @@
 <body>
 
     <header>
+        <img src="favicon.ico" alt="Logo" style="width: 20px; height: 20px; margin-right: 8px;">
         <h1>戒网查 3.0</h1>
         <div class="controls">
             <label for="colorScheme">配色：</label>
