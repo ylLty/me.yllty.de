@@ -8,6 +8,18 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <script>
+        //更新检查
+        const params = new URLSearchParams(window.location.search);//获取参数
+        const IS_FIRST_VERSION = !params.has('clientversion');//使用初始版本访问
+        if(IS_FIRST_VERSION){
+            toNewVersion();
+        }
+
+        function toNewVersion() {
+            window.location.href = "update.html";
+        }
+        //-----更新检查尾-----
+
         //默认浏览器打开链接
         function openInDefault(url) {
             copyText(url)//先复制
